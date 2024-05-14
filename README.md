@@ -1,4 +1,4 @@
-# CRUD's para productos
+# CRUD's para products clase
 
 ## Levantar aplicacion en modo de desarrollo
 1. ejecutar ```npm i```
