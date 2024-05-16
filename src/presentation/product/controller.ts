@@ -19,4 +19,8 @@ export class ProductController{
                 return res.json({message:"product create"});
                 
             }
+
+            findOne = (req:Request,res:Response)=>{
+                return res.json({message:"product create"});
+            }
 }

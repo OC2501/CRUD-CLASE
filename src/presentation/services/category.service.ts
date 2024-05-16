@@ -3,6 +3,7 @@ import { CreateCategoryDto } from "../../domain/dtos/category/create-category.dt
 import { CategoryEntity } from "../../domain/entities/category.entity";
 import { CategoryModel } from "../../database/mongodb/models/category.model";
 import { CategoryMaper } from "../../domain/mapers/category.mapers";
+import { UpdateCategoryDto } from "../../domain/dtos/category/update-category.dto";
 export class CategoryService {
   async create(createCategoryDto: CreateCategoryDto): Promise<CategoryEntity> {
     const {name}= createCategoryDto;
@@ -18,8 +19,32 @@ export class CategoryService {
     }
 }
 
-  update() {}
-  delete() {}
+async update(updateCategoryDto:UpdateCategoryDto, id:string):Promise<CategoryEntity>{
+  try {
+      const category = await CategoryModel.findByIdAndUpdate({
+          id: updateCategoryDto,
+          data:{...updateCategoryDto}
+      });
+      if(!category) throw Error('Error')
+      await category.save();
+      return CategoryMaper.fromEntity(category);
+
+  } catch (error) {
+      throw error; 
+  }
+}
+
+ 
+async delete(id:string):Promise<CategoryEntity>{
+  try {
+      const category = await CategoryModel.findOneAndDelete({id});
+      if(!category) throw Error('Error')
+      return CategoryMaper.fromEntity(category);
+
+  } catch (error) {
+      throw error; 
+  }
+}
   findOne() {}
   findAll() {}
 }

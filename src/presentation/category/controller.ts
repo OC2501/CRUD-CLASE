@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { CreateCategoryDto } from "../../domain/dtos/category/create-category.dto";
 import { CategoryService } from "../services/category.service";
+import {Validators} from '../../config/validator'
+import { UpdateCategoryDto } from "../../domain/dtos/category/update-category.dto";
 
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
@@ -12,15 +14,30 @@ export class CategoryController {
     .catch(error => res.status(500).json(error));
   };
 
-  update = (req: Request, res: Response) => {
-    return res.json({ message: "category create" });
-  };
+  update = (req:Request, res:Response) => {
+    const id = req.params.id
+    if(!Validators.validationMongoId(id)) throw Error('mongo id is not valid')
+    const [error, updateCategoryDto] = UpdateCategoryDto.update(req.body)
+    if(error) return res.status(400).json({error})
+    this.categoryService.update(updateCategoryDto!, id!)
+    .then(category => res.json(category))
+    .catch(error => res.status(500).json(error))
+}
 
-  delete = (req: Request, res: Response) => {
-    return res.json({ message: "category create" });
-  };
+  delete = (req:Request, res:Response) => {
+  const id = req.params.id
+  if(!Validators.validationMongoId(id)) throw Error('mongo id is not valid')
+  this.categoryService.delete(id!)
+  .then(category => res.json(category))
+  .catch(error => res.status(500).json(error))
+}
+
 
   findAll = (req: Request, res: Response) => {
+    return res.json({ message: "category create" });
+  };
+
+  findOne = (req: Request, res: Response) => {
     return res.json({ message: "category create" });
   };
 }
