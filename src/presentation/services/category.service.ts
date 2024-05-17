@@ -45,6 +45,15 @@ async delete(id:string):Promise<CategoryEntity>{
       throw error; 
   }
 }
-  findOne() {}
+async findOne(id:string):Promise<CategoryEntity>{
+  try {
+      const category = await CategoryModel.findOne({id});
+      if(!category) throw Error('Error')
+      return CategoryMaper.fromEntity(category);
+
+  } catch (error) {
+      throw error; 
+  }
+}
   findAll() {}
 }

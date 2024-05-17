@@ -38,6 +38,10 @@ export class CategoryController {
   };
 
   findOne = (req: Request, res: Response) => {
-    return res.json({ message: "category create" });
+  const id = req.params.id
+  if(!Validators.validationMongoId(id)) throw Error('mongo id is not valid')
+    this.categoryService.findOne(id!)
+    .then(category => res.json(category))
+    .catch(error => res.status(500).json(error))  
   };
 }
