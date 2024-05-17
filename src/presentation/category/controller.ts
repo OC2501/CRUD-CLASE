@@ -3,6 +3,7 @@ import { CreateCategoryDto } from "../../domain/dtos/category/create-category.dt
 import { CategoryService } from "../services/category.service";
 import {Validators} from '../../config/validator'
 import { UpdateCategoryDto } from "../../domain/dtos/category/update-category.dto";
+import { PaginationDto } from "../../domain/dtos/category/paginationdto";
 
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
@@ -34,7 +35,11 @@ export class CategoryController {
 
 
   findAll = (req: Request, res: Response) => {
-    return res.json({ message: "category create" });
+    const [error, paginationDto]=  PaginationDto.paginate(req.query);
+    if(error) return res.status(400).json({error})
+    this.categoryService.findAll(paginationDto!)
+    .then(category=> res.json(category))
+    .catch(error=> res.status(500).json)
   };
 
   findOne = (req: Request, res: Response) => {
