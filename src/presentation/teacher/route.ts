@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { ProductController } from "./controller";
-import { ProductService } from "../services/product.service";
+import { TeacherController } from "./controller";
+import { TeacherService } from "../services/teacher.service";
 
-export class ProductRoute{
+export class TeacherRoutes{
     static get routes(): Router{
         const routes= Router();
-        const productService = new ProductService();
-        const controller = new ProductController(productService);
+        const teacherService = new TeacherService();
+        const controller = new TeacherController(teacherService);
         routes.get('/',controller.findAll);
         routes.get('/:id',controller.findOne);
         routes.post('/',controller.create);
